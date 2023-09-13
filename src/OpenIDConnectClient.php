@@ -61,6 +61,16 @@ function b64url2b64(string $base64url): string
     return strtr($base64url, '-_', '+/');
 }
 
+/**
+ * Helps with escaped URLs in configuration endpoint.
+ * @param string $url
+ * @return string
+ */
+function unescape_url(string $url): string
+{
+    return str_replace('\\', '', $url);
+}
+
 
 /**
  * OpenIDConnect Exception Class
@@ -1389,7 +1399,7 @@ class OpenIDConnectClient
         }
 
         // Set URL to download
-        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_URL, unescape_url($url));
 
         if (isset($this->httpProxy)) {
             curl_setopt($ch, CURLOPT_PROXY, $this->httpProxy);
